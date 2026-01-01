@@ -1,0 +1,307 @@
+# 00_GENERATION_ENTRY.md【Contract】
+
+## 本專案生成順序（硬規則）
+1. 僅允許先填 01 → 02 → 03
+2. 未完成前，禁止生成 05 以後文件
+3. 任一 Contract 文件為空 → 停止生成
+
+## 人類最小輸入（Contract）
+- 01：目標 / 非目標 / 成功指標
+- 03：Boundary 名稱與擁有權
+- 11：裁決人
+
+除以上欄位外，人類不得直接填寫
+
+## 停止回報格式（硬）
+- 停止原因
+- 觸發文件
+- 阻塞規則
+- 建議人類動作
+
+
+## 生成角色
+- AI：僅填寫「允許欄位」
+- 人類：負責升級狀態與裁決
+## AI 停止生成條件（硬）
+- Contract 文件未完成
+- 規則衝突且未指定裁決人
+- 出現未定義 Boundary / Interface
+→ 立即停止，僅回報問題
+## 生成粒度
+- 每一條目 ≤ 3 行
+- 禁止長段說明
+- 若需展開，必須新增子文件
+
+# 00_README.md
+
+## 一句話
+本專案要解決什麼、不解決什麼。
+
+## 專案狀態
+PoC / MVP / Prod（必填其一）
+
+## 使用方式（僅列動作，不得提模組/服務/API 名）
+- Run
+- Test
+- Deploy
+
+## 文件狀態定義（硬規則）
+- **Exploration**：提出可能性，不構成承諾
+- **Decision**：已收斂，仍可調整
+- **Contract**：一經成立，變更必須走變更流程
+
+---
+
+# 01_GOALS_AND_NON_GOALS.md【Decision】
+
+## 目標（可驗收）
+- 條件 + 明確判斷標準
+
+## 非目標（強制）
+- 明確寫「不做什麼」
+
+## 成功指標（≤3）
+- 必須可量化
+
+---
+
+# 02_CORE_PRINCIPLES.md【Contract】
+
+## 全域鐵律（不可違反）
+- 一致性
+- 可追蹤
+- 可回滾
+- 可觀測
+
+> 本文件**禁止**出現任何模組名、服務名、API 名、資料表名
+
+## 命名 / 版本 / 結構規則
+- 任意人照做，結果必須一致
+
+## 文件變更觸發矩陣
+- 變更類型 → 必須更新之文件清單
+
+---
+
+# 03_SCOPE_AND_BOUNDARIES.md【Contract】
+
+## 切分原則
+- 依責任切分，不依人、不依技術
+
+## 邊界清單（僅列「責任與擁有權」）
+- Boundary A：擁有什麼
+- Boundary B：擁有什麼
+- 僅描述資料責任，不描述實作
+
+## 全域禁止事項（硬禁止）
+- 跨層呼叫
+- 直接存取他人 DB / Model / Internal API
+
+## 跨邊界原則（唯一允許位置）
+- 所有跨模組/跨邊界規則**只能**存在於本文件
+- 僅允許「原則與約束」，不得寫具體介面細節
+
+---
+
+# 04_SECURITY_RULES.md【Contract】
+
+## 身分與授權
+- 最小權限原則
+
+## 秘密管理
+- 允許存放位置
+- 絕對禁止位置（含 log）
+
+## 資料分類
+- 敏感 / 非敏感
+- 保存期限
+- 遮罩規則
+
+## 威脅模型（≤5）
+- 威脅 → 對策
+
+---
+
+# 05_ARCHITECTURE_OVERVIEW.md【Decision】
+
+## 系統結構
+入口 → 處理 → 儲存 → 外部依賴
+
+## 核心資料流
+- Request / Response
+- Event
+- Batch
+
+## 架構決策紀錄（ADR 簡化）
+- 為何選擇
+- 明確代價
+
+> 本文件**只允許描述已存在或已核准的通道**
+
+---
+
+# 06_INTERFACES_AND_CONTRACTS.md【Contract｜Optional】
+
+## 啟用狀態
+- Status: Exploration / Decision / Contract（必填）
+- 未啟用時必須說明原因
+
+## 對外介面
+- API / CLI / Event 格式
+
+## 錯誤與重試
+- 可重試 / 不可重試
+
+## 版本策略
+- Breaking change 處理方式
+
+> 禁止定義 05 未出現之連線  
+> Exploration 狀態下若先定介面，**必須同步補入 05（Exploration 標記）**
+
+---
+
+# 07_DATA_MODEL.md【Contract｜Optional】
+
+## 啟用狀態
+- Status: Exploration / Decision / Contract（必填）
+
+## 核心資料結構
+- 欄位意義（禁止只列名稱）
+
+## 約束條件
+- 唯一性 / 索引 / 關聯 / 刪除策略
+
+## Schema 遷移
+- 是否可回滾
+
+---
+
+# 08_OPS_AND_OBSERVABILITY.md【Decision｜Optional】
+
+## 啟用狀態
+- Status: Exploration / Decision
+
+## 日誌（最小集合）
+- trace id
+- request id
+- actor id
+
+## 核心指標
+- 延遲
+- 錯誤率
+- 吞吐
+
+## 告警
+- 事故定義
+- 升級路徑
+
+---
+
+# 09_TEST_STRATEGY.md【Decision｜Optional】
+
+## 啟用狀態
+- Status: Exploration / Decision
+
+## 測試分層
+- Unit / Integration / E2E
+
+## 最小必測清單
+- 高風險路徑
+
+## 測試資料
+- 來源
+- 清理策略
+
+---
+
+# 10_RISK_REGISTER.md【Exploration】
+
+## 當前狀態
+- Status: Exploration / Decision（擇一）
+
+## Top Risks（≤10）
+- 風險
+- 發生機率
+- 影響程度
+- 偵測方式
+- 緩解策略
+
+## 最脆弱假設
+- 若錯誤的後果
+- 提前驗證方式
+
+## Change Cost（強制）
+- Boundary
+- Interface
+- Data Model
+
+---
+
+# 11_DECISION_AND_CHANGE_FLOW.md【Contract】
+
+## 文件狀態轉換
+Exploration → Decision → Contract
+
+## 升級門檻
+- 驗證條件
+- 決策角色（責任人）
+
+## 變更流程
+1. 影響分析
+2. 受影響文件清單
+3. 決策或拒絕
+4. 記錄原因
+
+## 規則衝突裁決
+- 發生衝突時，必須指定裁決人
+- 未裁決前禁止生成或實作
+
+---
+
+# 文件存在性規則（全域）
+
+## Must
+- 01, 02, 03, 11
+
+## Optional
+- 06, 07, 08, 09  
+- **允許存在但必須填寫 Status，不得空白**
+
+## Forbidden
+- 與專案狀態無關之文件
+
+---
+
+# 12_rulevsdog.md【Contract】
+
+## Rule Level
+- A0（憲法）
+- A1（專案 Contract）
+- A2（Decision）
+- A3（Exploration）
+- A4（生成輔助）
+
+## 覆蓋關係
+- 上層 > 下層
+- 同層不得衝突
+
+## 衝突定義
+- 低層否定高層
+- 未標層級即生成
+- 規則來源不明
+
+## On Conflict
+- Stop generation（預設）
+- Drop lower level
+- Keep higher level
+
+## 禁止行為
+- 自動升級層級
+- 覆蓋 Contract
+- 無裁決人繼續產出
+
+## 生成檢查流程
+1. 標記層級
+2. 檢查上層
+3. 檢查同層
+4. 若衝突 → 停止

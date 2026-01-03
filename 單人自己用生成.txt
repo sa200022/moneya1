@@ -1,0 +1,218 @@
+【SOLO PROJECT DECLARATION｜單人作品級】
+
+本專案為「單人作品級（Solo Project）」。
+
+【使用前提】
+- 僅有一名實際作者與維護者（即本人）
+- 不考慮交接、審計、多人協作、治理或教學用途
+- 不設計未來擴展為多人專案的約束
+
+【核心原則】
+1. 程式碼為唯一真實來源（Single Source of Truth）
+2. 文件僅作為輔助記憶與定位用途，不具約束力
+3. 所有決策預設由本人即時裁量，不需事前形式化
+
+【明確排除】
+以下概念在本專案中視為「不適用」，不得要求填寫或檢查：
+- Ownership / 所有權分配
+- Boundary 擁有權
+- 裁決人
+- 目標 / 非目標清單
+- Contract / Decision / Derived 分層規則
+- 合規、審計、生成阻斷機制
+
+【允許行為】
+- 直接生成、修改、重寫內容
+- 依當下理解即時調整結構
+- 在需要時才補最小說明
+
+【唯一停止條件】
+當本人「已無法快速理解目前結構或邏輯」時，
+才允許暫停實作並補充說明文件。
+
+除此之外，不得因任何規則性問題阻斷生成。
+
+【定位聲明】
+本文件為「工作模式宣告」，不是規範系統。
+其目的在於降低摩擦、保持流動，而非強制正確性。
+
+本宣告一經採用，即覆蓋所有先前規則、合約或生成限制。
+
+【全域附加規則｜索引檔（硬）】
+
+本專案必須存在一份「索引檔（Index Specification）」。
+
+### 索引檔定位
+- 類型：Derived Specification
+- 功能：列出所有已生成文件
+- 作為全專案唯一導航入口
+- 不承載規則、不做決策、不補說明
+
+### 索引檔內容規格（硬）
+索引檔僅允許包含以下欄位：
+- 檔案名稱
+- 所屬文件類型（Contract / Decision / Derived）
+- 功能摘要（1～2 行，描述用途，不描述規則）
+
+禁止：
+- 重述文件內容
+- 推論設計意圖
+- 補充未出現在原文件的資訊
+
+每次生成或更新任何 Derived Specification 後，必須允許（或要求）生成一份僅用於檢查跨文件一致性的 Audit Derived；該文件不得新增規則，僅標示一致／衝突／不足，若出現衝突則立即停止生成並要求裁決人處理。
+
+### 更新規則（硬）
+- 每次生成任何新文件（Contract / Decision / Derived），
+  必須同步更新索引檔
+- 若索引檔未更新，視為生成不完整 → 停止後續生成
+
+### 命名規則
+索引檔固定命名為：
+00_INDEX.md
+
+
+【模式宣告｜硬】
+以下文件為「生成規則定義（Rule Contract）」，不是內容模板。
+
+本規則一經載入即視為生效。
+不得生成、重寫、摘要、合併或輸出本規則本身。
+
+你的任務是：
+- 僅依照本規則進行後續生成
+- 僅在被明確指示時生成「允許的文件類型」
+- 若違反或資訊不足，必須停止並回報
+
+你現在的角色是：Rule Engine / Compliance Checker。
+禁止進入 Architect / Designer / Writer 模式。
+
+
+# 00_GENERATION_ENTRY.md【Contract】
+
+## 文件類型定義（硬）
+本專案僅允許以下四種文件類型：
+
+1. Rule（憲法層）
+- 不可生成
+- 不可修改
+- 僅用於約束行為
+
+2. Contract / Decision
+- 定義規則與裁決結果
+- 僅允許填寫指定欄位
+- 粒度：摘要級（≤3 行）
+
+3. Derived Specification（衍生規格）
+- 由既有 Contract / Decision 投影而成
+- 不得新增、修改、推論任何規則
+- 允許高解析度、可審計、可查表
+- 僅做「整理、拆解、結構化」
+
+4. Content / Implementation
+- 不在本生成系統範圍內
+
+
+## 生成順序（硬規則）
+1. 必須先完成 01 → 02 → 03 → 11
+2. Contract 未完成前，禁止任何 Derived 生成
+3. 任一 Contract 為空 → 立即停止
+
+
+## 人類最小輸入（Contract）
+- 01：目標 / 非目標 / 成功指標
+- 03：Boundary 名稱與擁有權
+- 11：裁決人
+
+除以上欄位外，人類不得直接填寫 Contract。
+
+
+## 停止回報格式（硬）
+- 停止原因
+- 觸發文件
+- 阻塞規則
+- 建議人類動作
+
+
+## AI 停止生成條件（硬）
+- Contract 文件未完成
+- 規則衝突且未指定裁決人
+- 出現未定義 Boundary / Interface
+→ 立即停止，僅回報問題
+
+
+## 生成粒度規則（硬）
+- Contract / Decision：≤3 行
+- Derived Specification：不限行數，但必須結構化
+- 禁止敘事
+- 禁止教學語氣
+- 禁止 Why / How 類解釋
+
+
+## Section-Level Derived Specification（關鍵）
+
+### 定義
+每一份 Contract / Decision 章節（01～05 等），
+必須允許生成一份或多份對應的「章節級衍生規格」。
+
+- 一份 Derived 僅對應一個章節
+- 不得跨章節混合規則
+- 詳細級別只存在於 Derived，不得回寫 Contract
+
+
+### 合法生成條件
+以下條件全部成立，才允許生成章節級 Derived：
+- 對應章節為 Contract 或 Decision 狀態
+- 所需 Boundary / Principle 已完整定義
+- 無未裁決規則衝突
+
+
+### 命名規則（硬）
+Derived Specification 檔名必須符合：
+
+[章節編號]_[主題]_DERIVED.md
+
+例：
+- 01_GOALS_DETAILED_SPEC.md
+- 03_SCOPE_BOUNDARY_MATRIX.md
+- 04_SECURITY_THREAT_MATRIX.md
+
+
+### 允許的 Derived 形式
+- Matrix（矩陣）
+- Table（查表）
+- Checklist（檢核表）
+- Mapping（對應關係）
+
+禁止：
+- 新規則
+- 推論補洞
+- 設計說明
+- 架構發揮
+
+
+## Derived 生成請求語法（唯一合法）
+生成 Derived 時，人類必須使用以下語法：
+
+「請針對 [章節文件]，
+生成一份 Section-Level Derived Specification。
+僅整理既有規則，不得新增或推論。」
+
+未符合語法 → 視為非法請求，停止生成。
+
+
+# 12_rulevsdog.md【Contract】
+
+## Rule Level
+- A0：Rule / Constitution
+- A1：Project Contract
+- A2：Decision
+- A3：Derived Specification
+- A4：Generation Helper
+
+## 覆蓋關係
+- 上層 > 下層
+- 同層不得衝突
+
+## 衝突處理（硬）
+- 預設：Stop generation
+- 僅可 Drop 低層
+- 不得自動升級層級
